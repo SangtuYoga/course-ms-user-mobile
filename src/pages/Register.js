@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
-const Login = (props) => {
+const Register = (props) => {
   let history = useHistory();
 
   return (
@@ -19,20 +19,24 @@ const Login = (props) => {
       </div>
       <div className="justify-content-center mt-5 w-75 mx-auto">
         <div className="input-group mb-3">
-          <input type="email" className="form-control rounded-pill border border-warning text-center" aria-label="email" placeholder="Email"/>
+          <input type="text" className="form-control rounded-pill border border-warning text-center" aria-label="email" placeholder="Enter your fullname"/>
+        </div>
+        <div className="input-group mb-3">
+          <input type="email" className="form-control rounded-pill border border-warning text-center" aria-label="email" placeholder="Enter your email"/>
         </div>
         <div className="input-group mb-3">
           <input type="password" className="form-control rounded-pill border border-warning text-center" aria-label="password"
-          placeholder="Password"/>
+          placeholder="Enter your password"/>
+        </div>
+        <div className="input-group mb-3">
+          <input type="password" className="form-control rounded-pill border border-warning text-center" aria-label="password"
+          placeholder="confirm your password"/>
         </div>
         <div className="d-flex flex-column justify-content-center" id="">
-          <button className="btn btn-warning shadow rounded-pill mb-3" type="button" onClick={() =>{history.push("/home");}}>Login</button>
-          <button className="btn btn-warning shadow rounded-pill mb-4" type="button">Sign in with Google</button>
+          <button className="btn btn-warning shadow rounded-pill mb-3" type="button" onClick={() =>{history.push("/home");}}>Register</button>
         </div>
         <div className="d-flex flex-column justify-content-center ">
-          <Link to="/register" className="text-decoration-none  text-center">Having trouble logging in?</Link>
-          <hr className="bg-danger border-2 border-top border-danger w-50 mx-auto"></hr>
-          <Link to="/register" className="text-decoration-none  text-center">Sign Up</Link> 
+          <p className="text-center">Already have an account? <Link to="/" className="text-decoration-none">Sign In</Link></p>
         </div>
       </div>
       
@@ -40,4 +44,4 @@ const Login = (props) => {
   )
 };
 
-export default Login;
+export default Register;

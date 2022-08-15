@@ -51,3 +51,11 @@
 .orange-icon{
   color:#ED933D !important;
 }
+
+hr {
+  margin: 1rem 0;
+  color: inherit;
+  background-color: currentColor;
+  border: 0;
+  opacity: 0.25;
+}

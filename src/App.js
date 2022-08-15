@@ -9,6 +9,7 @@ import Appointment from './pages/Appointment';
 import Note from './pages/note';
 import Login from './pages/Login';
 import Product from './pages/product';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -16,9 +17,10 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={Login}/>
-          <Route exact path="/product/:id" component={Product} />
+          <Route exact path="/register" component={Register}/>
+          <Route exact path="/product/:id?" component={Product} />
           <Layout>
-          <Route exact path="/home" component={Home} />
+          <Route exact path="/home" component={() => <Home autorized={true}/>} />
           <Route exact path="/explore" component={Search} />
           <Route exact path="/account" component={Account} />
           <Route exact path="/appointment" component={Appointment} />

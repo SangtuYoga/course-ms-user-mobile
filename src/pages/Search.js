@@ -44,7 +44,7 @@ const Search = (props) => {
 
   return (
     <div>
-      <Nav className="w-100 navbar sticky-top navbar-light d-block d-lg-none mb-4 top-tab-nav" role="navigationtop" style={{ paddingTop: '5px', height: '50px'}}>
+      <Nav className="w-100 navbar sticky-top navbar-light d-block d-lg-none mb-4 top-tab-nav" role="navigationtop" style={{ paddingTop: '8px', height: '57px'}}>
         <div className=" d-flex flex-row justify-content-between w-100">
         <div className="d-flex">
           <NavItem>

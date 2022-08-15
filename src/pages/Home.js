@@ -2,7 +2,7 @@ import React from 'react';
 import "../App.css";
 import Card from 'react-bootstrap/Card';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { Nav, NavItem} from 'reactstrap';
 import { NavLink, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -78,7 +78,10 @@ function ProductDetails(props) {
     </div>
   );
 }
-const Home = (props) => {
+function Home ({autorized}){
+  if (!autorized) {
+    return <Redirect to="/"/>;
+  }
 
   return (
     <div>
@@ -88,8 +91,8 @@ const Home = (props) => {
               <img
                   alt=""
                   src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
-                  width="50"
-                  height="50"
+                  width="30"
+                  height="30"
                   className="rounded-circle"
                 />{''}
                 <div className="user">
@@ -153,7 +156,7 @@ const Home = (props) => {
       </div>
       <Switch>
         <Route
-          path="/product/:id"
+          path="/product/:id?"
           render={({ match }) => (
             <ProductDetails
               recommendations={recommendations.find(
