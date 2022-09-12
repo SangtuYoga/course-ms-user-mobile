@@ -10,6 +10,11 @@ import Note from './pages/note';
 import Login from './pages/Login';
 import Product from './pages/product';
 import Register from './pages/Register';
+import NotFound from './pages/404';
+import Course from './pages/course-detail';
+import AppointmentDetail from './pages/appointment-detail';
+import Report from './pages/report';
+import Absent from './pages/absent'
 
 function App() {
   return (
@@ -18,15 +23,19 @@ function App() {
         <Switch>
           <Route exact path="/" component={Login}/>
           <Route exact path="/register" component={Register}/>
-          <Route exact path="/product/:id?" component={Product} />
+          <Route exact path="/product/:id" component={Product} />
+          <Route exact path="/course-detail/:id" component={Course} />
+          <Route exact path="/appointment-detail" component={AppointmentDetail}/>
+          <Route exact path="/absent" component={Absent}/>
           <Layout>
           <Route exact path="/home" component={() => <Home autorized={true}/>} />
           <Route exact path="/explore" component={Search} />
           <Route exact path="/account" component={Account} />
           <Route exact path="/appointment" component={Appointment} />
-          <Route exact path="/note" component={Note}/>
+          <Route exact path="/note" component={() => <Note authorized={true}/>}/>
+          <Route exact path="/report" component={Report} />
           </Layout>
-          
+          <Route exact path="*" component={NotFound}/>
         </Switch>
       </BrowserRouter>
 

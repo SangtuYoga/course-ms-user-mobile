@@ -1,7 +1,11 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 
-const Note = (props) => {
+function Note ({authorized}){
 
+  if(!authorized){
+    return <Redirect to="/"/>
+  }
   return (
     <div>
       Note

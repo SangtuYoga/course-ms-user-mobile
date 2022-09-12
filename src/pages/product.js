@@ -1,37 +1,76 @@
-import React from 'react';
-// import { BrowserRouter, Switch, Route } from "react-router-dom";
+import React , { useEffect, useState } from 'react';
+import logokodak from '../logo-kodak.svg';
+import Card from 'react-bootstrap/Card';
 import { Nav, NavItem} from 'reactstrap';
-import { NavLink} from 'react-router-dom';
+import { NavLink, useParams, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart, faArrowLeft, faTag, faClock } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
 
+const Product = (props) => {
+  const { id } = useParams();
+  let history = useHistory();
+  console.log(id);
 
-function Product(props) {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const getProductbyId = async () => {
+      axios.get("http://localhost:3000/products/" + id,  {withCredentials : "true"})
+        .then((response) => {
+          setData(response.data);
+          console.log(data);
+          console.log(data.id);
+        })
+        .catch(error => {
+          console.log(error.response)
+      });
+    };
+    getProductbyId();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div>
-         <Nav className="w-100 navbar sticky-top navbar-light d-block d-lg-none mb-4 top-tab-nav" role="navigationtop" style={{ paddingTop: '8px', height: '57px'}}>
+      <div className="title-orange">
+      <Nav className="w-100 navbar sticky-top navbar-light d-block top-tab-nav-white nav-orange" role="navigationtop" style={{ paddingTop: '8px', height: '57px'}}>
         <div className=" d-flex flex-row justify-content-between w-100">
         <div className="d-flex">
           <NavItem>
-           
-            <NavLink to="/home" className="top-nav-link mb-3" activeClassName="active">
+            <NavLink to="" onClick={history.goBack} className="top-nav-link-white mb-3" activeClassName="active">
               <FontAwesomeIcon size="2x" icon={faArrowLeft}/>
             </NavLink>
-                
-            
           </NavItem>
           
-          <h5 className="user mb-3">Product Detail</h5>
+          <h5 className="user text-white mb-3">Product Detail</h5>
           </div>
           <NavItem className="d-flex">
-            <NavLink to="/cart" className="top-nav-link" activeClassName="active">
+            <NavLink to="/cart" className="top-nav-link-white" activeClassName="active">
               <FontAwesomeIcon size="2x" icon={faShoppingCart}/>
             </NavLink>
           </NavItem>
         </div>
       </Nav>
-       <div>Product</div> 
+      
+      <div className="subtitle-orange">
+       <div className="d-flex flex-row" style={{paddingTop: "25px"}}>
+       <img
+          alt=""
+          src={logokodak}
+          width="100"
+          height="100"
+          className="rounded-circle logo"
+        />{''}
+        <div className="mx-auto d-flex flex-column">
+          <p className="text-white h5">
+          {data.name}
+          </p>
+          <p>
+          
+          </p>
+        </div>
+       </div>
+      </div>
       {/* <Switch>
         <Route
           path="/product/:id"
@@ -45,7 +84,42 @@ function Product(props) {
         />
       </Switch> */}
       </div>
-      
+      <div className="container" style={{height:"25vh"}}>
+          <p className="text-muted my-2">Description</p>
+          <p className="description">{data.description}</p>
+          {/* <div id="module">
+            <p class="collapse" id="collapseExample" aria-expanded="false">
+            {recommendations[id].subtitle}
+            </p>
+            <Link role="button" class="collapsed" data-toggle="collapse" id="#collapseExample" aria-expanded="false" aria-controls="collapseExample"/>
+          </div> */}
+      </div>
+      <div class="mx-auto strike">
+        <span>Detail</span>
+      </div>
+      <div class="container">
+      <Card className="rounded-card">
+        <Card.Body>
+          <Card.Text className="mx-4 d-flex flex-row justify-content-between">
+            <div>
+              <FontAwesomeIcon size="sm" icon={faClock}/>
+              <span> {data.days_period} Days</span>
+            </div>
+            <div>
+              <FontAwesomeIcon size="sm" icon={faTag}/>
+              <span> Rp. {data.price}</span>
+            </div>
+          </Card.Text>
+        </Card.Body>
+      </Card>
+      </div>
+      <div style={{ paddingBottom: '70px' }}>
+      </div>
+      <div className="container d-flex flex-row justify-content-between fixed-bottom" id="">
+          <button className="btn btn-primary btn-lg shadow rounded-btn mb-3" type="button">Course Progress</button>
+          <button className="btn btn-success btn-lg shadow rounded-btn mb-3" type="button">Add to Cart</button>
+       </div>
+      </div>
     
     
   )

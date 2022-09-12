@@ -7,8 +7,9 @@ import { NavLink, Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const Appointment = (props) => {
+const Report = (props) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   let history = useHistory();
@@ -80,81 +81,89 @@ const Appointment = (props) => {
     );
   };
 
-  const ShowProducts = () => {
-    return (
-      data.map((data, index)=>(
-        <div className="d-flex justify-content-center mb-3">
-        <Card className="w-90 align-content-center shadow rounded" key={`data-${index}`}>
-        <Card.Body>
-        <Card.Title>{data.name}</Card.Title>
-        <Card.Subtitle className="text-muted">{data.description}</Card.Subtitle>
-        <Card.Text>
-          <p style={{ marginBottom: '0' }}>Price : {data.price}</p>
-          <span>Days Periode : {data.days_periode} </span>
-        </Card.Text>
+  const datas = [
+    {
+      name: 'Course A',
+      Absent: 40,
+      Progress: 24,
+      amt: 2400,
+    },
+    {
+      name: 'Course B',
+      Absent: 30,
+      Progress: 13,
+      amt: 2210,
+    },
+    {
+      name: 'Course C',
+      Absent: 70,
+      Progress: 70,
+      amt: 2290,
+    },
+    {
+      name: 'Course D',
+      Absent: 27,
+      Progress: 39,
+      amt: 2000,
+    }
+  ];
 
-        <Link to={`/product/${data.id}`}>More Details</Link>
-        </Card.Body>
-        </Card>
-        </div>
-      ))
-    );
-  };
-
-  const ShowSchedule = () => {
-    return (
-      schedule.map((schedule, index)=>(
-        <div className="d-flex justify-content-between flex-row mb-3">
-        <div className="d-flex flex-column mx-auto text-center">
-          <span className="h3">{schedule.day_name}</span>
-          <span className="h3">{schedule.day}</span>
-        </div>
-        <div>
-        {/* <Link to={`/appointment-detail/${schedule.id}`}> */}
-        <Link to={`/appointment-detail`}>  
-        <Card className="appointment-card w-100 shadow" key={`schedule-${index}`}>
-          <Card.Body className="appointment-body">
-            <Card.Text className="mx-4 d-flex flex-column justify-content-between">
-              <div>
-                <span>{schedule.name}</span>
-              </div>
-              <div>
-                <span>{schedule.start_time} - {schedule.end_time}</span>
-              </div>
-            </Card.Text>
-          </Card.Body>
-        </Card>
-        </Link>
-        </div>
-      </div>
-      ))
-    );
-  };
+  const toPercent = (decimal, fixed = 0) => `${(decimal * 1).toFixed(fixed)}%`;
 
   return (
     <div>
-      <Nav className="w-100 navbar sticky-top navbar-light d-block mb-4 top-tab-nav" role="navigationtop" style={{ paddingTop: '8px', height: '57px'}}>
+      <Nav className="w-100 navbar sticky-top navbar-light d-block d-lg-none mb-4 top-tab-nav" role="navigationtop" style={{ paddingTop: '8px', height: '57px'}}>
         <div className=" d-flex flex-row justify-content-between w-100">
         <div className="d-flex">
           <NavItem>
-           
             <NavLink to="" onClick={history.goBack} className="top-nav-link mb-3" activeClassName="active">
               <FontAwesomeIcon size="2x" icon={faArrowLeft}/>
             </NavLink>
-                
-            
           </NavItem>
-          
-          <h5 className="user mb-3">Class Schedule</h5>
+          <h5 className="user mb-3">Report Statistics</h5>
           </div>
         </div>
       </Nav>
       <div className="d-flex justify-content-center">
-        <p className="font-weight-bold">Time Table</p>
+        <p className="font-weight-bold">Report Student for the course</p>
       </div>
-      <ShowSchedule/>
+      <div className="d-flex justify-content-center mb-4">
+        <Card className="w-90 align-content-center shadow rounded text-center report-card">
+        <Card.Body>
+        <Card.Title className="d-flex flex-column mb-0">
+            <span>Student</span>
+            <span>Report</span>
+            <span>Course</span>
+        </Card.Title>
+        </Card.Body>
+        </Card>
+        </div>
+      <div>
+        <BarChart
+          width={350}
+          height={300}
+          data={datas}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 10,
+            bottom: 5
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" style={{fontSize:"10px"}}/>
+          <YAxis domain={[0, 100]} tickFormatter={(tick) => {
+          return `${tick}%`;
+          }}/>
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="Absent" fill="#8884d8" background={{ fill: "#eee" }} />
+          <Bar dataKey="Progress" fill="#82ca9d"/>
+        </BarChart>
+        </div>
+        
     </div>
   )
 };
 
-export default Appointment;
+export default Report;

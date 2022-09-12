@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import "../App.css";
 import Card from 'react-bootstrap/Card';
 import ProgressBar from 'react-bootstrap/ProgressBar';
-import { Switch, Route, Redirect } from "react-router-dom";
 import { Nav, NavItem} from 'reactstrap';
+import Spinner from 'react-bootstrap/Spinner';
 import { NavLink, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faClipboard } from '@fortawesome/free-solid-svg-icons';
+import { faClipboard } from '@fortawesome/free-solid-svg-icons';
+import axios from "axios";
+import { useLocation } from "react-router-dom";
 
 const course = [{
   id:1,
-  name: 'Computer Science',
+  name: 'Web Design HTML5, CSS, Javascript Beginner 1.0',
   star: '4',
   trainer: 'Pande',
   level: 'Beginer',
@@ -19,7 +21,7 @@ const course = [{
 },
 {
   id:2,
-  name: 'Data Analysis',
+  name: 'PHP MYSQL PROGRAMMING',
   star: '5',
   trainer: 'Dyah',
   level: 'Intermediate',
@@ -28,7 +30,7 @@ const course = [{
 },
 {
   id:3,
-  name: 'UI/UX',
+  name: 'Construct 2D',
   star: '4',
   trainer: 'Wahyu',
   level: 'Expert',
@@ -37,55 +39,78 @@ const course = [{
 },
 ]
 
-const recommendations = [{
-  id:1,
-  name : 'PHP My Admin',
-  kategori : 'Front-End',
-  subtitle: 'Ini adalah kelas php',
-  price : '750.000',
-  star : '4',
-  trainer : 'Alviantara',
-  level : 'Beginer'
-},{
-  id:2,
-  name : 'Computer Science 2',
-  kategori : 'Science',
-  subtitle: 'Ini adalah kelas computer science',
-  price : '800.000',
-  star : '3.9',
-  trainer : 'Yudi Utama',
-  level : 'All Level'
-},{
-  id:3,
-  name : 'Robotic',
-  kategori : 'Robotic',
-  subtitle: 'Ini adalah kelas robotic',
-  price : '600.000',
-  star : '4.5',
-  trainer : 'Wahyu Wastuguna',
-  level : 'Intermediate'
-}]
+const Home = () => {
+  const [data, setData] = useState([]);
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
+  const email = localStorage.getItem('email');
+  
+  useEffect(() => {
+   
+    const getProduct = async () => {
+      setIsLoading(true);
+      axios.get("http://localhost:3000/products", {withCredentials : "true"})
+        .then((response) => {
+          setData(response.data);
+          console.log(data);
+          setIsLoading(false);
+        })
+        .catch(error => {
+          console.log(error.response);
+      });
+    };
+    getProduct();
+    getNama();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-function ProductDetails(props) {
-  const { id, name } = props.product;
+  const [coba, setCoba] = useState([]);
+  const getNama = async () => {
+    setIsLoading(true);
+    axios.get("http://localhost:3000/usersstudent", {withCredentials : "true"})
+      .then((response) => {
+        setCoba(response.data);
+      })
+      .catch(error => {
+        console.log(error.response);
+    });
+  };
+  const filtt = coba.filter(
+    item => item.email === email
+  );  
 
-  return (
-    <div>
-      <div>
-        <h1>{id}</h1>
-        <h1>{name}</h1>
+  const Loading = () => {
+    return (
+      <div className="mx-auto">
+      <Spinner animation="border" variant="warning"/>
       </div>
-    </div>
-  );
-}
-function Home ({autorized}){
-  if (!autorized) {
-    return <Redirect to="/"/>;
-  }
+    );
+  };
 
+  const ShowProducts = () => {
+    return (
+      data.slice(0, 3).map((data, index)=>(
+        <div className="d-flex justify-content-center mb-3">
+        <Card className="w-90 align-content-center shadow rounded-product" key={`data-${index}`}>
+        <Card.Body>
+        <Card.Title>{data.name}</Card.Title>
+        <Card.Subtitle className="text-muted">{data.description}</Card.Subtitle>
+        <Card.Text>
+          <p style={{ marginBottom: '0' }}>Price : {data.price}</p>
+          <span>Days Periode : {data.days_period} </span>
+        </Card.Text>
+
+        <Link to={`/product/${data.id}`}>More Details</Link>
+        </Card.Body>
+        </Card>
+        </div>
+      ))
+    );
+  };
+  
   return (
     <div>
-      <Nav className="w-100 navbar sticky-top navbar-light d-block d-lg-none mb-4 top-tab-nav" role="navigationtop">
+      <Nav className="w-100 navbar sticky-top navbar-light d-block mb-4 top-tab-nav" role="navigationtop">
         <div className=" d-flex flex-row justify-content-between w-100">
           <NavItem>
               <img
@@ -96,7 +121,10 @@ function Home ({autorized}){
                   className="rounded-circle"
                 />{''}
                 <div className="user">
-                <p className="h6">Hai, <span style={{ color : '#ED933D' }}>Wahyu Wastuguna</span></p>
+                
+                <p className="h6">Hai, <span style={{ color : '#ED933D' }}>
+                  {filtt.map((i)=>(i.full_name.substring(0,6)))}
+                  </span></p>
               </div>
           </NavItem>
           <NavItem className="d-flex" style={{ paddingTop: '5px' }}>
@@ -107,65 +135,40 @@ function Home ({autorized}){
         </div>
       </Nav>
       <div className="d-flex justify-content-center text-white">
-      <Card className="text-center w-75 border-dark bg-card">
+      <Card className="text-center w-90 bg-card card-progress">
         <Card.Body>
           <Card.Title className="text-center">Your Progress in Course</Card.Title>
           {
             course.map((course, index)=>(
-              
+              <Link to={`/course-detail/${course.id}`} className="text-white">
               <Card.Text key={`course-${index}`}>
                 <Card.Text style={{ marginBottom: '0' }}><b>{course.name}</b></Card.Text>
-                  <div className="justify-content-around">
-                  <span>
-                  <FontAwesomeIcon icon={faStar} size="xs" color="yellow" />{course.star} </span>
-                  <span>By {course.trainer}</span>
-                  <span> {course.level}</span>
-                  </div>
                   <ProgressBar variant={course.variant} now={course.progress} />
               </Card.Text>
+              </Link>
             ))
           }
         </Card.Body>
       </Card>
       </div>
+      <div className="d-flex justify-content-center text-white mb-3 mt-4 text-center">
+        <Link to='/absent' className="btn-lg w-90 rounded-pill link-orange shadow">
+          Koding Akademi Absent  
+        </Link>
+      </div>
+      <div className="d-flex justify-content-center text-white mb-3 mt-3 text-center">
+        <Link to='/report' className="btn-lg w-90 rounded-pill link-orange shadow">
+        Report Student Activity   
+        </Link>
+      </div>
       <div className="justify-content-center m-3">
-        <p className="text-center">-- Recommendation -- </p>
+        <div class="mx-auto strike">
+          <span>Recommendation</span>
+        </div>
       </div>
       <div className="d-flex flex-column justify-content-center mb-3">
-            {
-              recommendations.map((recommendations, index)=>(
-                <div className="d-flex justify-content-center mb-3">
-                <Card className="w-75 align-content-center shadow rounded" key={`recommendations-${index}`}>
-                <Card.Body>
-                <Card.Title>{recommendations.name}</Card.Title>
-                <Card.Subtitle className="text-muted">{recommendations.subtitle}</Card.Subtitle>
-                <Card.Text>
-                  <p style={{ marginBottom: '0' }}>Price : {recommendations.price}</p>
-                  <span>
-                  <FontAwesomeIcon icon={faStar}size="xs" color="yellow" />{recommendations.star} </span>
-                  <span>By {recommendations.trainer} </span>
-                  <span>{recommendations.level}</span>
-                </Card.Text>
-
-                <Link to={{pathname:`/product/${recommendations.id}`, state:{id:recommendations.id, name:recommendations.name}}} >More Details</Link>
-                </Card.Body>
-                </Card>
-                </div>
-              ))
-            }
+        {isLoading === true ? <Loading /> : <ShowProducts />}
       </div>
-      <Switch>
-        <Route
-          path="/product/:id?"
-          render={({ match }) => (
-            <ProductDetails
-              recommendations={recommendations.find(
-                (recommendations) => String(recommendations.id) === match.params.id
-              )}
-            />
-          )}
-        />
-      </Switch>
       <div style={{ paddingBottom: '70px' }}>
       </div>
     </div>

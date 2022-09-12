@@ -7,12 +7,16 @@ import { NavLink, Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import { addDays } from 'date-fns';
+import "react-datepicker/dist/react-datepicker.css";
 
-const Appointment = (props) => {
+const AppointmentDetail = (props) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   let history = useHistory();
-
+  const [startDate, setStartDate] = useState(null);
+   
   useEffect(() => {
     const getProduct = async () => {
       setIsLoading(true);
@@ -110,8 +114,7 @@ const Appointment = (props) => {
           <span className="h3">{schedule.day}</span>
         </div>
         <div>
-        {/* <Link to={`/appointment-detail/${schedule.id}`}> */}
-        <Link to={`/appointment-detail`}>  
+        <Link to={`/schedule-detail/${schedule.id}`}> 
         <Card className="appointment-card w-100 shadow" key={`schedule-${index}`}>
           <Card.Body className="appointment-body">
             <Card.Text className="mx-4 d-flex flex-column justify-content-between">
@@ -145,16 +148,58 @@ const Appointment = (props) => {
             
           </NavItem>
           
-          <h5 className="user mb-3">Class Schedule</h5>
+          <h5 className="user mb-3">Class Schedule Detail</h5>
           </div>
         </div>
       </Nav>
-      <div className="d-flex justify-content-center">
-        <p className="font-weight-bold">Time Table</p>
+      <div>
+      <p className="font-weight-bold px-2">Hello, let's grow for future!</p>
       </div>
-      <ShowSchedule/>
+      <div className="d-flex justify-content-center mb-3">
+      <Card className="">
+        <Card.Body>
+          <Card.Text className="d-flex flex-column">
+            <div>
+              <span className="text-success">3h 30min</span>
+            </div>
+            <div>
+              <span className="h3">UI Advanced</span>
+            </div>
+            <div>
+              <span>Advanced mobile interface design</span>
+            </div>
+          </Card.Text>
+        </Card.Body>
+      </Card>
+      </div>
+      <div >
+      <p className="font-weight-bold px-2 h4 mt-3">Pick a date</p>
+      <DatePicker
+      wrapperClassName="date-picker"
+      className="form-control form-control-lg w-90 mx-auto"
+      selected={startDate}
+      onChange={(date) => setStartDate(date)}
+      minDate={new Date()}
+      maxDate={addDays(new Date(), 14)}
+      popperPlacement="bottom"
+      placeholderText="Select a date between today and 5 days in the future"
+    />
+      </div>
+      <p className="font-weight-bold px-2 h4 mt-3">Pick a time</p>
+      <div className="d-flex flex-row justify-content-around mb-3">
+      <button type="button" className="btn btn-light btn-lg rounded w-45">09.30</button>
+      <button type="button" className="btn btn-light btn-lg rounded w-45">10.30</button>
+      </div>
+      <div className="d-flex flex-row justify-content-around">
+      <button type="button" className="btn btn-light btn-lg rounded w-45">11.30</button>
+      <button type="button" className="btn btn-light btn-lg rounded w-45">12.30</button>
+      </div>
+      <div className="container d-flex flex-row justify-content-between fixed-bottom" id="">
+          <button className="btn btn-primary btn-lg shadow rounded-btn mb-3 w-45" onClick={history.goBack} type="button">Back</button>
+          <button className="btn btn-success btn-lg shadow rounded-btn mb-3 w-45" type="button">Save</button>
+       </div>
     </div>
   )
 };
 
-export default Appointment;
+export default AppointmentDetail;
