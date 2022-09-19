@@ -3,6 +3,7 @@ import logokodak from '../logo-kodak.svg';
 import { useHistory, Link} from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import axios from "axios";
 
 function Login () {
     const history = useHistory();
@@ -17,26 +18,46 @@ function Login () {
     const handlePasswordChange = e => {
         setPassword(e.target.value)
     };
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     console.log(email);
+    //     let result = await fetch("http://localhost:3000/loginstudent", {
+    //         method: 'POST',
+    //         credentials: 'include',
+    //         body: JSON.stringify({ email, password }),
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         }
+    //     })
+    //     if (result.status === 200) {
+    //         history.push({
+    //           pathname: '/home',
+    //           // state: { email: email }
+    //     });
+    //       localStorage.setItem('email', email);
+    //     } else if (result.status === 205) {
+    //       history.push({
+    //         pathname: '/home',
+    //         // state: { email: email }
+    //       });
+    //       localStorage.setItem('email', email);
+    //     } else {
+    //         setMsg(true);
+    //     }
+    // }
+
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(email);
-        let result = await fetch("http://localhost:3000/loginstudent", {
-            method: 'POST',
-            credentials: 'include',
-            body: JSON.stringify({ email, password }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        if (result.status === 200) {
-            history.push({
-              pathname: '/home',
-              // state: { email: email }
-        });   
+      e.preventDefault();
+      axios.post('http://localhost:3000/loginstudent', {
+          email: email,
+          password: password,
+      }, { withCredentials: 'true' }).then(() => {
           localStorage.setItem('email', email);
-        } else {
-            setMsg(true);
-        }
+          history.push("/home");
+      }).catch((error) => {
+          console.log(error)
+          setMsg(error.response.data.msg)
+      });
     }
 
   return (
@@ -50,14 +71,14 @@ function Login () {
               className="rounded-circle mx-auto d-block logo"
             />{''}
             <p className="text-center h5 pt-3">Koding Akademi</p>
-            <p className="text-center h6 text-muted">Welcome to the future</p>
+            <p className="text-center h6 text-muted">Lupa Password</p>
       </div>
       <div className="justify-content-center mt-5 w-75 mx-auto">
       <Form onSubmit={handleSubmit}>
         <p className="has-text-centered"></p>
         {msg ? (
             <div className="alert alert-danger" role="alert">
-                Login gagal, email atau password salah
+                {msg}
             </div>)
             : (<></>)}
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -90,7 +111,7 @@ function Login () {
         </div>
         
         <div className="d-flex flex-column justify-content-center ">
-          <Link to="/register" className="text-decoration-none  text-center">Having trouble logging in?</Link>
+          <Link to="/forget" className="text-decoration-none  text-center">Having trouble logging in?</Link>
           <hr className="bg-danger border-2 border-top border-danger w-50 mx-auto"></hr>
           <Link to="/register" className="text-decoration-none  text-center">Sign Up</Link> 
         </div>

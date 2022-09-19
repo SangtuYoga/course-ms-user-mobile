@@ -8,7 +8,7 @@ const NotFound = (props) => {
     <div style={{backgroundColor: '#111', height: '100vh', paddingTop: '75%'}}>
         <div className="text-center mx-auto h4 text-white">
             <p>Page {pathname} not Found</p>
-            <Link to="/">Home</Link>
+            <Link to="/home">Home</Link>
         </div>
 
     </div>

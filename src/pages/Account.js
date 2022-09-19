@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import  { useEffect, useState } from "react";
+import Navigation from "../components/Navigation";
 
 const Account = (props) => {
   const history = useHistory();
@@ -94,6 +95,7 @@ const Account = (props) => {
       </div>
       <div style={{ paddingBottom: '90px' }}>
       </div>
+      <Navigation/>
     </div>
   )
 };

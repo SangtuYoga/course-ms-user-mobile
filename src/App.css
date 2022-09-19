@@ -202,7 +202,10 @@ hr {
 .appointment-card{
   background-color: #ED933D !important;
   color: #fff !important;
-  border-radius: 20px 0px 0px 20px !important;
+}
+
+.appointment-link{
+  color: #fff !important;
 }
 
 .report-card{
@@ -212,7 +215,7 @@ hr {
 }
 
 .appointment-body{
-  width: 250px !important;
+  border-radius: 20px !important;
 }
 
 .date-picker input {
@@ -252,4 +255,24 @@ hr {
   font-size: 12px;
   font-weight: 700;
   color: #111;
+}
+
+.bg-absent{
+  background-color: #ED933D;
+  height: 100vh;
+}
+
+.h-80{
+  margin-top: 4rem !important;
+  height: 80vh;
+  border-radius: 20px!important;
+}
+
+.fs-1{
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.bold{
+  font-weight: 700;
 }

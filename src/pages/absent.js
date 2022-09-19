@@ -1,10 +1,10 @@
 import React , { useEffect, useState } from 'react';
 import logokodak from '../logo-kodak.svg';
 import Card from 'react-bootstrap/Card';
-import { Nav, NavItem} from 'reactstrap';
+import { Nav } from 'reactstrap';
 import { NavLink, useParams, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowUp, faCheck, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import Moment from 'react-moment';
 
@@ -16,29 +16,7 @@ const Absent = () => {
   // const [showResults2, setShowResults2] = React.useState(false)
 
   const [data, setData] = useState([]);
-  const [product, setProduct] = useState([]);
-  const [totalSum, setTotalSum] = useState(0);
-  const length = data.length;
-
-  const monthNames = ["January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-    ];
   const current = new Date();
-  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
-
-  useEffect(() => {
-    const getProductbyId = async () => {
-      axios.get("http://localhost:3000/products/" + id,  {withCredentials : "true"})
-        .then((response) => {
-          setProduct(response.data);
-        })
-        .catch(error => {
-          console.log(error.response)
-      });
-    };
-    getProductbyId();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     const getProductby = async () => {
@@ -54,25 +32,27 @@ const Absent = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    const total = data.reduce((acc, row) => acc + data.amount, 0);
-    setTotalSum(total)
-  }, [data]);
+  const [coba, setCoba] = useState([]);
+  const email = localStorage.getItem('email');
 
-  const Results = () => {
-    return (
-      data.map((data, index)=>(
-        <ul className="list-group mb-3">
-          <li className="list-group-item list-account">
-          <Link className="d-flex justify-content-between account-menu">
-            <span>{data.name}</span>
-            <FontAwesomeIcon size="lg" icon={faCheck}/>
-          </Link>
-          </li>
-        </ul>
-      ))
-    );
-    };
+  useEffect(() => {
+  
+      const getNama = async () => {
+        axios.get("http://localhost:3000/usersstudent", {withCredentials : "true"})
+          .then((response) => {
+            setCoba(response.data);
+          })
+          .catch(error => {
+            console.log(error.response);
+        });
+      };
+    getNama();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  
+  const filtt = coba.filter(
+    item => item.email === email
+  );  
     
 
     return (
@@ -129,8 +109,8 @@ const Absent = () => {
                 />
             </div>
             <div className="d-flex flex-column">
-              <span className="rounded-pill btn btn-outline-primary btn-siswa">Siswa</span>
-              <span className="name-siswa">Wahyu Wastuguna</span>
+              <span className="rounded-pill btn btn-outline-primary btn-siswa">{filtt.map((i)=>(i.role))}</span>
+              <span className="name-siswa">{filtt.map((i)=>(i.full_name.substring(0,6)))}</span>
               <span className="date-siswa">
                 <Moment format="dddd, Do MMM YYYY">
                     {current}
@@ -164,16 +144,21 @@ const Absent = () => {
       </div>
       </div>
       <div className="container" style={{height:"25vh"}}>
-          <p className="text-muted my-2 text-center">Course Content</p>
-          <div className="mt-4">
-          <Link onClick={()=>setShowResults(!showResults)} className="d-flex justify-content-between account-menu">
-            <span className="h5" style={{ color : '#ED933D' }}>Course Progress</span>
-            
-            { showResults ? <FontAwesomeIcon className="orange-icon" size="lg" icon={faArrowUp}/> : <FontAwesomeIcon className="orange-icon" size="lg" icon={faArrowDown}/> }
-          </Link>
-            <div className="pb-3">
-            { showResults && <Results/> }
+          <div className="">
+            <div className="text-center h3 fw-bold mt-5 mb-5">
+              <Moment format="hh:mm">
+                      {current}
+              </Moment>
             </div>
+            <div className="d-flex justify-content-center text-white mb-3 mt-4 text-center">
+              <Link to='/scan-barcode' className="btn-lg w-50 rounded-pill link-orange shadow">
+                Scan me 
+              </Link>
+            </div>
+            <div className="text-center">
+            Silahkan scan barcode disini
+            </div>
+              
           </div>
           {/* <div className="mt-4">
           <Link onClick={()=>setShowResults2(!showResults2)} className="d-flex justify-content-between account-menu">

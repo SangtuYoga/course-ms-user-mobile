@@ -5,8 +5,9 @@ import { Nav, NavItem} from 'reactstrap';
 import Spinner from 'react-bootstrap/Spinner';
 import { NavLink, Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faArrowLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
+import Navigation from "../components/Navigation";
 
 const recommendations = [{
   id:1,
@@ -99,21 +100,12 @@ const Search = (props) => {
         <div className=" d-flex flex-row justify-content-between w-100">
         <div className="d-flex">
           <NavItem>
-           
             <NavLink to="" onClick={history.goBack} className="top-nav-link mb-3" activeClassName="active">
               <FontAwesomeIcon size="2x" icon={faArrowLeft}/>
             </NavLink>
-                
-            
           </NavItem>
-          
           <h5 className="user mb-3">Explore</h5>
           </div>
-          <NavItem className="d-flex">
-            <NavLink to="/cart" className="top-nav-link" activeClassName="active">
-              <FontAwesomeIcon size="2x" icon={faShoppingCart}/>
-            </NavLink>
-          </NavItem>
         </div>
       </Nav>
       <div className="d-flex justify-content-center text-white">
@@ -147,6 +139,7 @@ const Search = (props) => {
       </div>
       <div style={{ paddingBottom: '70px' }}>
       </div>
+      <Navigation/>
     </div>
   )
 };
