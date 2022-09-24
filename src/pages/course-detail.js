@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import { Nav, NavItem} from 'reactstrap';
 import { NavLink, useParams, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowUp, faCheck, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowUp, faCheckCircle, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
 const Course = () => {
@@ -58,7 +58,7 @@ const Course = () => {
           <li className="list-group-item list-account">
           <Link className="d-flex justify-content-between account-menu">
             <span>{data.name}</span>
-            <FontAwesomeIcon size="lg" icon={faCheck}/>
+            <FontAwesomeIcon size="lg" icon={faCheckCircle}/>
           </Link>
           </li>
         </ul>

@@ -10,34 +10,6 @@ import { faClipboard } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import Navigation from "../components/Navigation";
 
-const course = [{
-  id: 1,
-  name: 'Web Design HTML5, CSS, Javascript Beginner 1.0',
-  star: '4',
-  trainer: 'Pande',
-  level: 'Beginer',
-  progress: '70',
-  variant: 'primary'
-},
-{
-  id: 2,
-  name: 'PHP MYSQL PROGRAMMING',
-  star: '5',
-  trainer: 'Dyah',
-  level: 'Intermediate',
-  progress: '40',
-  variant: 'success'
-},
-{
-  id: 3,
-  name: 'Construct 2D',
-  star: '4',
-  trainer: 'Wahyu',
-  level: 'Expert',
-  progress: '90',
-  variant: 'danger'
-},
-]
 /* eslint eqeqeq: 0 */
 const Home = () => {
   const [data, setData] = useState([]);
@@ -118,7 +90,7 @@ const Home = () => {
   const [product, setProduct] = useState([])
   const getProductCourse = async () => {
     setIsLoading(true);
-    axios.get("http://localhost:3000/products", { withCredentials: "true" })
+    axios.get("http://localhost:3000/productsDistinct", { withCredentials: "true" })
       .then((response) => {
         setProduct(response.data);
         console.log(data);
@@ -151,9 +123,16 @@ const Home = () => {
   const filttidclass = (schedule.filter(({id}) => idcourse.includes(id))
   );
 
+  const idproduct = filttidclass.map((i) => i.product_id)
+
+  const productname = (data.filter(({id}) => idproduct.includes(id))
+  );
 
   console.log(idcourse);
   console.log(filttidclass);
+  console.log(product);
+  console.log(idproduct);
+  console.log(productname);
 
   const Loading = () => {
     return (
@@ -170,7 +149,7 @@ const Home = () => {
           <Card.Body>
             <Card.Title className="text-center">Your Progress in Course</Card.Title>
             {
-              course.map((course, index) => (
+              productname.map((course, index) => (
                 <Link to={`/course-detail/${course.id}`} className="text-white">
                   <Card.Text key={`course-${index}`}>
                     <Card.Text style={{ marginBottom: '0' }}><b>{course.name}</b></Card.Text>
@@ -260,6 +239,15 @@ const Home = () => {
           Report Student Activity
         </Link>
       </div>
+      {role == "Student" ? 
+      <span></span> 
+      :  
+      <div className="d-flex justify-content-center text-white mb-3 mt-3 text-center">
+        <Link to='/note' className="btn-lg w-90 rounded-pill link-orange shadow">
+          Notes
+        </Link>
+      </div>}
+     
       <div className="justify-content-center m-3">
         <div class="mx-auto strike">
           {role == "Student" ? <span>Recommendation</span> : <span>Course Koding Akademi</span>}

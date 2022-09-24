@@ -64,7 +64,7 @@ const Report = (props) => {
   console.log(filterdata);
   console.log(data);
   console.log(length);
-  console.log(idstudent);
+  console.log(role);
 
   const schedule = [{
     id: 1,
@@ -147,6 +147,7 @@ const Report = (props) => {
         amt: 2000,
       }
     ];
+    
     return (
       <>
         <div className="d-flex justify-content-center">
@@ -197,13 +198,17 @@ const Report = (props) => {
           <p className="font-weight-bold">Report Trainer for the course</p>
         </div>
         <div className="d-flex justify-content-center mb-4">
+
           <Card className="w-90 align-content-center shadow rounded text-center report-card">
-            <Card.Body>
-              <Card.Title className="d-flex flex-column mb-0">
-                <span>Trainer</span>
-                <span>Report</span>
-              </Card.Title>
-            </Card.Body>
+            <Link to="/report-employee" className="report-link">
+              <Card.Body>
+                <Card.Title className="d-flex flex-column mb-0">
+                  <span>Trainer</span>
+                  <span>Report</span>
+                </Card.Title>
+              </Card.Body>
+
+            </Link>
           </Card>
         </div>
         <div>

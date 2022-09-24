@@ -71,7 +71,7 @@ function Login () {
               className="rounded-circle mx-auto d-block logo"
             />{''}
             <p className="text-center h5 pt-3">Koding Akademi</p>
-            <p className="text-center h6 text-muted">Lupa Password</p>
+            <p className="text-center h6 text-muted">Welcome to the future</p>
       </div>
       <div className="justify-content-center mt-5 w-75 mx-auto">
       <Form onSubmit={handleSubmit}>

@@ -40,6 +40,7 @@ const recommendations = [{
 
 const Search = (props) => {
   const [data, setData] = useState([]);
+  const [category, setCategory] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   let history = useHistory();
 
@@ -57,13 +58,32 @@ const Search = (props) => {
       });
     };
     getProduct();
+    getCategory();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const getCategory = async () => {
+    setIsLoading(true);
+    axios.get("http://localhost:3000/product-categories", {withCredentials : "true"})
+      .then((response) => {
+        setCategory(response.data);
+        console.log(category);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.log(error.response);
+    });
+  };
 
   const [filterText, setFilterText] = React.useState('');
   const filteredItems = data.filter(
     item => item.name.toLowerCase().includes(filterText.toLowerCase())
   );  
+
+  const upperdata = category.filter(item => 
+  item.name.charAt(0).toUpperCase() + item.name.slice(1))
+
+  console.log(upperdata);
 
   const Loading = () => {
     return (
@@ -120,13 +140,13 @@ const Search = (props) => {
           Search by Category
         </div>
         <div className="container">
-        <div className="d-flex flex-row justify-content-around mb-3 mt-3">
+        <div className="d-flex flex-row rows justify-content-around mb-3 mt-3">
           {
-            recommendations.map((recommendations, index)=>(
-            <button type="button" className="btn btn-primary btn-sm rounded-pill w-25">{recommendations.kategori}</button>
+            upperdata.map((category)=>(
+            <button type="button" className="fs-12 btn btn-primary btn-sm rounded-pill w-30 mb-3" value={category.id} style={{textTransform: 'capitalize'}}>{category.name}</button>
             ))
           }
-        </div>    
+        </div>   
         </div>
         
       <div className="justify-content-center m-3">

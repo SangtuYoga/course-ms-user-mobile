@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft} from '@fortawesome/free-solid-svg-icons';
 
 const Scan = () => {
-  const [data, setData] = useState("Captura : ...");
+  const [data, setData] = useState([]);
   const [show, setShow] = useState(false);
   let history = useHistory();
 
@@ -15,6 +15,10 @@ const Scan = () => {
   const onUpdateScreen = (err, result) => {
     if (result) {
       setData(result.text);
+      history.push({
+        pathname: '/send-scan',
+          state: data // your data array of objects
+      })
       console.log(result);
       setShow(false);
     } else {

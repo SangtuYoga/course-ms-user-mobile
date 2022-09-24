@@ -7,6 +7,7 @@ import Search from './pages/Search';
 import Account from './pages/Account';
 import Appointment from './pages/Appointment';
 import Note from './pages/note';
+import CreateNote from './pages/create-note'
 import Login from './pages/Login';
 import Product from './pages/product';
 import Register from './pages/Register';
@@ -20,6 +21,7 @@ import SendScan from './pages/kirim-absent';
 import Forget from './pages/forget';
 import Verification from './pages/verification';
 import ChangePassword from './pages/change-password';
+import ReportEmployee from './pages/report-employee';
 
 function App() {
   return (
@@ -42,7 +44,9 @@ function App() {
           <Route exact path="/account" component={Account} />
           <Route exact path="/appointment" component={Appointment} />
           <Route exact path="/note" component={() => <Note authorized={true}/>}/>
+          <Route exact path="/create-note" component={() => <CreateNote authorized={true}/>}/>
           <Route exact path="/report" component={Report} />
+          <Route exact path="/report-employee" component={ReportEmployee} />
           <Route exact path="*" component={NotFound}/>
         </Switch>
       </BrowserRouter>
