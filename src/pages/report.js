@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../App.css"
 import Card from 'react-bootstrap/Card';
 import { Nav, NavItem } from 'reactstrap';
-import Spinner from 'react-bootstrap/Spinner';
+// import Spinner from 'react-bootstrap/Spinner';
 import { NavLink, Link, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -12,19 +12,15 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 /* eslint eqeqeq: 0 */
 const Report = (props) => {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const email = localStorage.getItem('email');
   const [coba, setCoba] = useState([]);
   let history = useHistory();
 
   useEffect(() => {
     const getReport = async () => {
-      setIsLoading(true);
       axios.get("https://6312108a19eb631f9d7f06f2.mockapi.io/student_report")
         .then((response) => {
           setData(response.data);
-          console.log(data);
-          setIsLoading(false);
         })
         .catch(error => {
           console.log(error.response);
@@ -32,14 +28,61 @@ const Report = (props) => {
     };
     getReport();
     getNama();
+    getReportData();
+    getEmployee();
+    getStudent();
+    getUnit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getNama = async () => {
-    setIsLoading(true);
     axios.get("http://localhost:3000/usersstudent", { withCredentials: "true" })
       .then((response) => {
         setCoba(response.data);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
+  const [unit, setUnit] = useState([]);
+  const getUnit = async () => {
+    axios.get("http://localhost:3000/product-units", {withCredentials : 'true'})
+      .then((response) => {
+        setUnit(response.data);
+      })
+      .catch(error => {
+        console.log(error.response)
+    })
+  };
+
+  const [reportData, setReportData] = useState([]);
+  const getReportData = async () => {
+    axios.get("http://localhost:3000/report-teacher", {withCredentials : 'true'})
+      .then((response) => {
+        setReportData(response.data);
+      })
+      .catch(error => {
+        console.log(error.response)
+    })
+  };
+
+  const [student, setStudent] = useState([]);
+  const getStudent = async () => {
+    axios.get("http://localhost:3000/students", { withCredentials: "true" })
+      .then((response) => {
+        setStudent(response.data);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
+  const [employee, setEmployee] = useState([]);
+  const getEmployee = async () => {
+    axios.get("http://localhost:3000/employee", { withCredentials: "true" })
+      .then((response) => {
+        setEmployee(response.data);
       })
       .catch(error => {
         console.log(error.response);
@@ -50,103 +93,83 @@ const Report = (props) => {
     item => item.email === email)
   );
 
-  const idstudent = filtt.map((i) => i.id)
+  const iduser = filtt.map((i) => i.id)
   const role = filtt.map((i) => i.role)
 
   const filterdata = (data.filter(
-    item => item.student_id == idstudent)
+    item => item.student_id == iduser)
   );
+
+  const filteremp = (employee.filter(
+    item => item.user_id == iduser)
+  )
+
+  const idemployee = filteremp.map((i) => i.id)
+
+  const filterreport = (reportData.filter(
+    item => item.employee_id == idemployee)
+  );
+
+  const sortfilterreport = filterreport.map(obj => {
+    return {
+      ...obj,
+      date: new Date(obj.created_at),
+      time: new Date(new Date(obj.created_at) * 1000).toLocaleTimeString(),
+      dateonly: new Date(new Date(obj.created_at)).toLocaleString()
+    }
+  })
+    .sort((a, b) => b.date - a.date)
 
   const length = ((filterdata.length / 11) * 100);
 
-  const maping = filterdata.map((item) => item)
+  console.log(idemployee);
+  console.log(filterreport);
+  console.log(sortfilterreport);
+  console.log(unit);
 
-  console.log(filterdata);
-  console.log(data);
-  console.log(length);
-  console.log(role);
-
-  const schedule = [{
-    id: 1,
-    name: 'Website HTML',
-    start_time: '13:00',
-    end_time: '15:00',
-    day_name: 'Mon',
-    day: '05',
-    month: '09',
-    year: '2022'
-  },
-  {
-    id: 2,
-    name: 'Arduino',
-    start_time: '15:00',
-    end_time: '16:00',
-    day_name: 'Tues',
-    day: '06',
-    month: '09',
-    year: '2022'
-  },
-  {
-    id: 3,
-    name: 'Basis Data',
-    start_time: '15:00',
-    end_time: '16:00',
-    day_name: 'Wed',
-    day: '07',
-    month: '09',
-    year: '2022'
-  },
-  {
-    id: 4,
-    name: 'Website HTML',
-    start_time: '15:00',
-    end_time: '16:00',
-    day_name: 'Thurs',
-    day: '09',
-    month: '09',
-    year: '2022'
-  },
-  ]
-
-  const Loading = () => {
-    return (
-      <div className="mx-auto">
-        <Spinner animation="border" variant="warning" />
-      </div>
-    );
-  };
+  // const Loading = () => {
+  //   return (
+  //     <div className="mx-auto">
+  //       <Spinner animation="border" variant="warning" />
+  //     </div>
+  //   );
+  // };
   // https://6312108a19eb631f9d7f06f2.mockapi.io/student_report
-
-
-
 
   const ReportStudent = () => {
     const datas = [
       {
-        name: 'Course A',
+        name: 'Web Design HTML5, CSS, Javascript Beginner 1.0',
         Absent: 40,
         Progress: length,
         amt: 2400,
       },
       {
-        name: 'Course B',
+        name: 'PHP MYSQL PROGRAMMING',
         Absent: 30,
         Progress: 13,
         amt: 2210,
-      },
-      {
-        name: 'Course C',
-        Absent: 70,
-        Progress: 70,
-        amt: 2290,
-      },
-      {
-        name: 'Course D',
-        Absent: 27,
-        Progress: 39,
-        amt: 2000,
       }
+      // ,
+      // {
+      //   name: 'Course C',
+      //   Absent: 70,
+      //   Progress: 70,
+      //   amt: 2290,
+      // },
+      // {
+      //   name: 'Course D',
+      //   Absent: 27,
+      //   Progress: 39,
+      //   amt: 2000,
+      // }
     ];
+
+    const tickFormatter = (value: string, index: number) => {
+      const limit = 20; // put your maximum character
+      if (value.length < limit) return value;
+      return `${value.substring(0, limit)}...`;
+   };
     
     return (
       <>
@@ -165,9 +188,8 @@ const Report = (props) => {
           </Card>
         </div>
         <div>
+        <ResponsiveContainer width="100%" height={300}>
           <BarChart
-            width={350}
-            height={300}
             data={datas}
             margin={{
               top: 5,
@@ -176,16 +198,22 @@ const Report = (props) => {
               bottom: 5
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" style={{ fontSize: "10px" }} />
+            <CartesianGrid strokeDasharray="5 5" />
+            <XAxis 
+            height={60}
+            dataKey="name" 
+            style={{ fontSize: "10px"}}
+            tickFormatter={tickFormatter}
+            />
             <YAxis domain={[0, 100]} tickFormatter={(tick) => {
               return `${tick}%`;
             }} />
-            <Tooltip />
+            <Tooltip formatter="name"/>
             <Legend />
             <Bar dataKey="Absent" fill="#8884d8" background={{ fill: "#eee" }} />
             <Bar dataKey="Progress" fill="#82ca9d" />
           </BarChart>
+        </ResponsiveContainer>
         </div>
       </>
     );
@@ -207,12 +235,37 @@ const Report = (props) => {
                   <span>Report</span>
                 </Card.Title>
               </Card.Body>
-
             </Link>
           </Card>
         </div>
         <div>
+          {sortfilterreport.map((data, index) => (
+            <div className="d-flex justify-content-center mb-3">
+            <Card className="note-card w-90 align-content-center shadow rounded-product" key={`data-${index}`}>
+              <Card.Body>
+                <Card.Title className="d-flex flex-column">
+                    <span className="fs-12 my-auto d-flex justify-content-end text-white">
+                    {data.dateonly}
+                  </span>
+                  <span className="fs-12 my-auto d-flex justify-content-end">To :&nbsp;
+                      {(student.filter(item => item.id == data.student_id)).map((item) => item.name_student)}
+                  </span>
+                </Card.Title>
+                <Card.Subtitle className="">
+                <div className="d-flex flex-column">
+                    <span className="h6 text-d">{(unit.filter(item => item.id == data.unit_id)).map((item) => item.name)}</span>
+                    <span className="fs-12 text-d">Score :</span>
+                  </div>
+                </Card.Subtitle>
+                <Card.Text>
 
+                  <p className="text-dd" style={{ fontSize: "14px" }}>{data.description}</p>
+                  {/* <span>Days Periode : {data.days_period} </span> */}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          </div>
+          ))}
         </div>
       </>
     );

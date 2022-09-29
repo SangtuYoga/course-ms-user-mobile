@@ -1,29 +1,27 @@
 import React, {useState}from 'react';
-import logokodak from '../logo-kodak.svg';
 import { useHistory, Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 
 const ChangePassword = (props) => {
   let history = useHistory();
-  const [full_name, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
+  // const [full_name, setFullName] = useState('');
+  // const [phone, setPhone] = useState('');
+  // const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confPassword, setConfPassword] = useState('');
-  const [role, setRole] = useState('Student');
+  const [role] = useState('Student');
   const [msg, setMsg] = useState('');
 
-  const handleNameChange = e => {
-    setFullName(e.target.value)
-  };
-  const handlePhoneChange = e => {
-    setPhone(e.target.value)
-  };
-  const handleEmailChange = e => {
-    setEmail(e.target.value)
-  };
+  // const handleNameChange = e => {
+  //   setFullName(e.target.value)
+  // };
+  // const handlePhoneChange = e => {
+  //   setPhone(e.target.value)
+  // };
+  // const handleEmailChange = e => {
+  //   setEmail(e.target.value)
+  // };
   const handlePasswordChange = e => {
     setPassword(e.target.value)
   };
@@ -54,9 +52,6 @@ const ChangePassword = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     axios.post('http://localhost:3000/users', {
-      full_name: full_name,
-      phone: phone,
-      email: email,
       password: password,
       confPassword: confPassword,
       role: role

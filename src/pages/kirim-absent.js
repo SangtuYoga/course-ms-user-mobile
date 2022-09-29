@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import logokodak from '../logo-kodak.svg';
 import Card from 'react-bootstrap/Card';
-import { Nav } from 'reactstrap';
-import { NavLink, useParams, Link, useHistory, useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft} from '@fortawesome/free-solid-svg-icons';
+import { Link, useLocation } from 'react-router-dom';
 import Moment from 'react-moment';
 
 const Send_Scan = () => {
@@ -19,7 +16,7 @@ const Send_Scan = () => {
       <div className="d-flex flex-row justify-content-center">
         <Card className=" w-90 align-content-center shadow h-80">
             <Card.Body>
-            <Card.Title className="text-center h-5">Selamat Belajar</Card.Title>
+            <Card.Title className="text-center h-5">Have a Good Study</Card.Title>
             <Card.Text>
                 <div className="mx-auto d-flex justify-content-center mt-5">
                     <img
@@ -31,12 +28,12 @@ const Send_Scan = () => {
                     />
                 </div>
                 <div className="mx-4 d-flex justify-content-center mt-5">
-                    <p className="h3">Berhasil Absen</p>
+                    <p className="h3">Success</p>
                 </div>
-                <div  className="mx-4 d-flex justify-content-center">
-                    <p className="text-muted">Anda masuk pukul</p>
-                </div>
-                <div className="text-center h3 fw-bold mb-5">
+                {/* <div  className="mx-4 d-flex justify-content-center">
+                    <p className="text-muted">at</p>
+                </div> */}
+                <div className="text-center mb-5" style={{fontSize: "4.5rem", fontWeight: "600"}}>
                     <Moment format="hh:mm">
                             {current}
                     </Moment>

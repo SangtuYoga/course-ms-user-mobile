@@ -1,15 +1,15 @@
+/*eslint-disable eqeqeq*/
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import { Nav, NavItem } from 'reactstrap';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
-import { NavLink, Link, useHistory } from 'react-router-dom';
+import { NavLink} from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
 const Note = () => {
-  let history = useHistory();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const email = localStorage.getItem('email');
@@ -77,18 +77,6 @@ const Note = () => {
 
   const role = filtt.map((i) => i.role)
   const iduser = filtt.map((i) => i.id)
-  const idreciever = data.map((i) => i.student_id)
-  const idreciever2 = data.map((i) => i.employee_id)
-
-  const filttidstudent = (student.filter(({ id }) => idreciever.includes(id))
-  );
-
-  const filteridemployee = (employee.filter(
-    item => item.id == idreciever2)
-  );
-
-  const filteridemp = (employee.filter(({ id }) => idreciever2.includes(id))
-  );
 
   const filterestd = (student.filter(
     item => item.user_id == iduser)
@@ -100,8 +88,6 @@ const Note = () => {
     item => item.student_id == idstudent)
   );
 
-  const datarolestd = filterdatastd.filter((i) => i.role == "Employee")
-
   const filteremp = (employee.filter(
     item => item.user_id == iduser)
   )
@@ -111,8 +97,6 @@ const Note = () => {
   const filterdataemp = (data.filter(
     item => item.employee_id == idemployee)
   );
-
-  const dataroleemp = filterdataemp.filter((i) => i.role == "Student")
 
 
   const sortfilterdatastd = filterdatastd.map(obj => {
@@ -134,10 +118,6 @@ const Note = () => {
     }
   })
     .sort((a, b) => b.date - a.date)
-    
-  console.log(filterdatastd);
-  console.log(datarolestd);
-  console.log(sortfilterdatastd);
 
   const Loading = () => {
     return (
@@ -157,26 +137,25 @@ const Note = () => {
               <Card className="note-card w-90 align-content-center shadow rounded-product" key={`data-${index}`}>
                 <Card.Body>
                   <Card.Title className="d-flex flex-column">
-                    <span className="fs-12 my-auto d-flex justify-content-end text-white">To :&nbsp;
+                    <span className="fs-12 my-auto d-flex justify-content-end text-d">To :&nbsp;
                       {(employee.filter(item => item.id == data.employee_id)).map((item) => item.name_employee)}
                     </span>
-                    <span className="fs-12 my-auto d-flex justify-content-end text-d">
+                    <span className="fs-12 my-auto d-flex justify-content-end text-white">
                       {data.dateonly}
                     </span>
                   </Card.Title>
                   <Card.Subtitle className="">
-                    <span className="h6 text-white">{data.title}</span>
+                    <span className="h6 text-d">{data.title}</span>
                   </Card.Subtitle>
                   <Card.Text>
 
-                    <p className="text-white" style={{ fontSize: "14px" }}>{data.description}</p>
+                    <p className="text-dd" style={{ fontSize: "14px" }}>{data.description}</p>
                     {/* <span>Days Periode : {data.days_period} </span> */}
                   </Card.Text>
                 </Card.Body>
               </Card>
             </div>
           )
-          
         }else{
           return(
             <div className="d-flex justify-content-center mb-3">
@@ -251,7 +230,6 @@ const Note = () => {
                       <span className="h6 text-white">{data.title}</span>
                     </Card.Subtitle>
                     <Card.Text>
-  
                       <p className="text-white" style={{ fontSize: "14px" }}>{data.description}</p>
                       {/* <span>Days Periode : {data.days_period} </span> */}
                     </Card.Text>

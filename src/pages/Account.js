@@ -1,4 +1,5 @@
 import React from 'react';
+import usericon from '../assets/user-icon.png'
 import { useHistory, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
@@ -41,7 +42,7 @@ const Account = (props) => {
       <div className="justify-content-center mt-5">
       <img
               alt=""
-              src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
+              src={usericon}
               width="150"
               height="150"
               className="rounded-circle mx-auto d-block"

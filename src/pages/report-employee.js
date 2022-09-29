@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../App.css"
-import Card from 'react-bootstrap/Card';
 import { Nav, NavItem } from 'reactstrap';
-import Spinner from 'react-bootstrap/Spinner';
+// import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { NavLink, Link, useHistory } from 'react-router-dom';
+import { NavLink,  useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faCamera, faVideo } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
@@ -16,19 +15,16 @@ const ReportEmployee = (props) => {
     const [student, setStudent] = useState([]);
     const [user, setUser] = useState([]);
     const [unit, setUnit] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
     const email = localStorage.getItem('email');
     const [coba, setCoba] = useState([]);
     let history = useHistory();
 
     useEffect(() => {
         const getReport = async () => {
-            setIsLoading(true);
             axios.get("https://6312108a19eb631f9d7f06f2.mockapi.io/student_report")
                 .then((response) => {
                     setData(response.data);
                     console.log(data);
-                    setIsLoading(false);
                 })
                 .catch(error => {
                     console.log(error.response);
@@ -46,7 +42,6 @@ const ReportEmployee = (props) => {
     }, [])
 
     const getNama = async () => {
-        setIsLoading(true);
         axios.get("http://localhost:3000/usersstudent", { withCredentials: "true" })
             .then((response) => {
                 setCoba(response.data);
@@ -61,23 +56,13 @@ const ReportEmployee = (props) => {
     );
 
     const idstudent = filtt.map((i) => i.id)
-    const role = filtt.map((i) => i.role)
-
-    const filterdata = (data.filter(
-        item => item.student_id == idstudent)
-    );
-
-    const length = ((filterdata.length / 11) * 100);
-
-    const maping = filterdata.map((item) => item)
+    // const role = filtt.map((i) => i.role)
 
     const getStudent = async () => {
-        setIsLoading(true);
         axios.get("http://localhost:3000/students", { withCredentials: "true" })
             .then((response) => {
                 setStudent(response.data);
                 console.log(student);
-                setIsLoading(false);
             })
             .catch(error => {
                 console.log(error.response);
@@ -85,11 +70,9 @@ const ReportEmployee = (props) => {
     };
 
     const getUser = async () => {
-        setIsLoading(true);
         axios.get("http://localhost:3000/usersstudent", { withCredentials: 'true' })
             .then((response) => {
                 setUser(response.data);
-                setIsLoading(false);
             })
             .catch(error => {
                 console.log(error.response);
@@ -108,7 +91,6 @@ const ReportEmployee = (props) => {
 
     const [schedule, setSchedule] = useState([]);
     const getSchedule = async () => {
-        setIsLoading(true);
         axios.get("http://localhost:3000/schedules", { withCredentials: "true" })
             .then((response) => {
                 setSchedule(response.data);
@@ -120,7 +102,6 @@ const ReportEmployee = (props) => {
 
     const [employee, setEmployee] = useState([]);
     const getEmployee = async () => {
-        setIsLoading(true);
         axios.get("http://localhost:3000/employee", { withCredentials: "true" })
             .then((response) => {
                 setEmployee(response.data);
@@ -132,12 +113,10 @@ const ReportEmployee = (props) => {
 
     const [product, setProduct] = useState([]);
     const getProduct = async () => {
-        setIsLoading(true);
         axios.get("http://localhost:3000/products", { withCredentials: "true" })
             .then((response) => {
                 setProduct(response.data);
                 console.log(data);
-                setIsLoading(false);
             })
             .catch(error => {
                 console.log(error.response);
@@ -157,30 +136,13 @@ const ReportEmployee = (props) => {
         item => item.employee_id == idemployee)
     );
 
-    const productcode = filterschedule.map((i) => i.product_id);
-
-    const filterproduct = (product.filter(({ id }) => productcode.includes(id))
-    );
-
-    const filteredProduct = product.filter(
-        item => item.id == productcode,
-    );
-
-    const tespro = product.filter(
-        item => item.id == 2,
-    );
-
-    console.log(filteredProduct);
-    console.log(product);
-    console.log(filterschedule);
-
-    const Loading = () => {
-        return (
-            <div className="mx-auto">
-                <Spinner animation="border" variant="warning" />
-            </div>
-        );
-    };
+    // const Loading = () => {
+    //     return (
+    //         <div className="mx-auto">
+    //             <Spinner animation="border" variant="warning" />
+    //         </div>
+    //     );
+    // };
     // https://6312108a19eb631f9d7f06f2.mockapi.io/student_report
 
     return (
@@ -193,7 +155,7 @@ const ReportEmployee = (props) => {
                                 <FontAwesomeIcon size="2x" icon={faArrowLeft} />
                             </NavLink>
                         </NavItem>
-                        <h5 className="user mb-3">Report Statistics</h5>
+                        <h5 className="user mb-3">Create Report</h5>
                     </div>
                 </div>
             </Nav>

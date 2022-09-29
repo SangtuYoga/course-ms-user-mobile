@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import { Nav, NavItem} from 'reactstrap';
 import { NavLink, useParams, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart, faArrowLeft, faTag, faClock } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faTag, faClock } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 
 const Product = (props) => {
@@ -20,7 +20,6 @@ const Product = (props) => {
         .then((response) => {
           setData(response.data);
           console.log(data);
-          console.log(data.id);
         })
         .catch(error => {
           console.log(error.response)
@@ -44,11 +43,6 @@ const Product = (props) => {
           
           <h5 className="user text-white mb-3">Product Detail</h5>
           </div>
-          <NavItem className="d-flex">
-            <NavLink to="/cart" className="top-nav-link-white" activeClassName="active">
-              <FontAwesomeIcon size="2x" icon={faShoppingCart}/>
-            </NavLink>
-          </NavItem>
         </div>
       </Nav>
       
@@ -61,12 +55,9 @@ const Product = (props) => {
           height="100"
           className="rounded-circle logo"
         />{''}
-        <div className="mx-auto d-flex flex-column">
+        <div className="mx-auto d-flex flex-column my-auto mx-auto">
           <p className="text-white h5">
           {data.name}
-          </p>
-          <p>
-          
           </p>
         </div>
        </div>
@@ -115,10 +106,10 @@ const Product = (props) => {
       </div>
       <div style={{ paddingBottom: '70px' }}>
       </div>
-      <div className="container d-flex flex-row justify-content-between fixed-bottom" id="">
+      {/* <div className="container d-flex flex-row justify-content-between fixed-bottom" id="">
           <button className="btn btn-primary btn-lg shadow rounded-btn mb-3" type="button">Course Progress</button>
           <button className="btn btn-success btn-lg shadow rounded-btn mb-3" type="button">Add to Cart</button>
-       </div>
+       </div> */}
       </div>
     
     

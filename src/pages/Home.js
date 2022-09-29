@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
+import usericon from '../assets/user-icon.png'
 import Card from 'react-bootstrap/Card';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { Nav, NavItem } from 'reactstrap';
@@ -23,7 +24,6 @@ const Home = () => {
       axios.get("http://localhost:3000/products", { withCredentials: "true" })
         .then((response) => {
           setData(response.data);
-          console.log(data);
           setIsLoading(false);
         })
         .catch(error => {
@@ -35,9 +35,9 @@ const Home = () => {
     getStudent();
     getSchedule();
     getStudentCourse();
-    getProductCourse();
+    getUnit();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [])  
 
   const [coba, setCoba] = useState([]);
   const getNama = async () => {
@@ -54,7 +54,7 @@ const Home = () => {
   const [schedule, setSchedule] = useState([]);
   const getSchedule = async () => {
     setIsLoading(true);
-    axios.get("http://localhost:3000/schedules", { withCredentials: "true" })
+    axios.get("http://localhost:3000/class-schedules", { withCredentials: "true" })
       .then((response) => {
         setSchedule(response.data);
       })
@@ -87,18 +87,15 @@ const Home = () => {
       });
   };
 
-  const [product, setProduct] = useState([])
-  const getProductCourse = async () => {
-    setIsLoading(true);
-    axios.get("http://localhost:3000/productsDistinct", { withCredentials: "true" })
+  const [unit, setUnit] = useState([]);
+  const getUnit = async () => {
+    axios.get("http://localhost:3000/product-units", {withCredentials : 'true'})
       .then((response) => {
-        setProduct(response.data);
-        console.log(data);
-        setIsLoading(false);
+        setUnit(response.data);
       })
       .catch(error => {
-        console.log(error.response);
-      });
+        console.log(error.response)
+    })
   };
 
   const filtt = (coba.filter(
@@ -128,11 +125,12 @@ const Home = () => {
   const productname = (data.filter(({id}) => idproduct.includes(id))
   );
 
-  console.log(idcourse);
-  console.log(filttidclass);
-  console.log(product);
-  console.log(idproduct);
-  console.log(productname);
+  const productnameid = productname.map((i) => i.id)
+
+  const productunit = (unit.filter(({product_id}) => productnameid.includes(product_id))
+  );
+
+  console.log(productunit);
 
   const Loading = () => {
     return (
@@ -141,6 +139,20 @@ const Home = () => {
       </div>
     );
   };
+  const Courses = () =>{
+      return (
+        productname.map((course, index) => {
+          return(
+          <Link to={`/course-detail/${course.id}`} className="text-white">
+            <Card.Text key={`course-${index}`}>
+              <Card.Text style={{ marginBottom: '0' }}><b>{course.name}</b></Card.Text>
+              <ProgressBar variant="danger" now={course.nilai} />
+            </Card.Text>
+          </Link>
+          )
+        })
+      )
+  }
 
   const Roles = () => {
     if (role == 'Student') {
@@ -148,15 +160,10 @@ const Home = () => {
         <Card className="text-center w-90 bg-card card-progress">
           <Card.Body>
             <Card.Title className="text-center">Your Progress in Course</Card.Title>
-            {
-              productname.map((course, index) => (
-                <Link to={`/course-detail/${course.id}`} className="text-white">
-                  <Card.Text key={`course-${index}`}>
-                    <Card.Text style={{ marginBottom: '0' }}><b>{course.name}</b></Card.Text>
-                    <ProgressBar variant={course.variant} now={course.progress} />
-                  </Card.Text>
-                </Link>
-              ))
+            {filttidschedule !== null ? 
+            <Courses/> 
+            : 
+            <Card.Text style={{ marginBottom: '0' }}><b>Belum Mengikuti Course</b></Card.Text>
             }
           </Card.Body>
         </Card>
@@ -175,7 +182,7 @@ const Home = () => {
 
   const ShowProducts = () => {
     return (
-      data.slice(0, 3).map((data, index) => (
+      data.slice(2, 4).map((data, index) => (
         <div className="d-flex justify-content-center mb-3">
           <Card className="w-90 align-content-center shadow rounded-product" key={`data-${index}`}>
             <Card.Body>
@@ -201,7 +208,7 @@ const Home = () => {
           <NavItem>
             <img
               alt=""
-              src="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
+              src={usericon}
               width="30"
               height="30"
               className="rounded-circle"
@@ -214,11 +221,16 @@ const Home = () => {
               </span></p>
             </div>
           </NavItem>
-          <NavItem className="d-flex" style={{ paddingTop: '5px' }}>
-            <NavLink to="/note" className="top-nav-link" activeClassName="active">
-              <FontAwesomeIcon size="2x" icon={faClipboard} />
-            </NavLink>
-          </NavItem>
+          {role == 'Student' ? 
+            <NavItem className="d-flex" style={{ paddingTop: '5px' }}>
+              <NavLink to="/note" className="top-nav-link" activeClassName="active">
+                <FontAwesomeIcon size="2x" icon={faClipboard} />
+              </NavLink>
+            </NavItem>
+          : 
+            <span></span>
+          }
+          
         </div>
       </Nav>
       <div className="d-flex justify-content-center text-white">

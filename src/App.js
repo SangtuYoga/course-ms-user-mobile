@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import Layout from "./layout/layout";
 import Home from './pages/Home';
 import Search from './pages/Search';
 import Account from './pages/Account';
@@ -35,7 +34,7 @@ function App() {
           <Route exact path="/change-password" component={ChangePassword}/>
           <Route exact path="/product/:id" component={Product} />
           <Route exact path="/course-detail/:id" component={Course} />
-          <Route exact path="/appointment-detail" component={AppointmentDetail}/>
+          <Route exact path="/appointment-detail/:id" component={AppointmentDetail}/>
           <Route exact path="/absent" component={Absent}/>
           <Route exact path="/scan-barcode" component={Scan}/>
           <Route exact path="/send-scan" component={SendScan}/>

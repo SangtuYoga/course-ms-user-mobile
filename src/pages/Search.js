@@ -9,35 +9,6 @@ import { faArrowLeft, faSearch } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import Navigation from "../components/Navigation";
 
-const recommendations = [{
-  id:1,
-  name : 'PHP My Admin',
-  kategori : 'Front-End',
-  subtitle: 'Ini adalah kelas php',
-  price : '750.000',
-  star : '4',
-  trainer : 'Alviantara',
-  level : 'Beginer'
-},{
-  id:2,
-  name : 'Computer Science 2',
-  kategori : 'Science',
-  subtitle: 'Ini adalah kelas computer science',
-  price : '800.000',
-  star : '3.9',
-  trainer : 'Yudi Utama',
-  level : 'All Level'
-},{
-  id:3,
-  name : 'Robotic',
-  kategori : 'Robotic',
-  subtitle: 'Ini adalah kelas robotic',
-  price : '600.000',
-  star : '4.5',
-  trainer : 'Wahyu Wastuguna',
-  level : 'Intermediate'
-}]
-
 const Search = (props) => {
   const [data, setData] = useState([]);
   const [category, setCategory] = useState([]);
@@ -82,8 +53,6 @@ const Search = (props) => {
 
   const upperdata = category.filter(item => 
   item.name.charAt(0).toUpperCase() + item.name.slice(1))
-
-  console.log(upperdata);
 
   const Loading = () => {
     return (
@@ -131,7 +100,7 @@ const Search = (props) => {
       <div className="d-flex justify-content-center text-white">
         <div className="input-group custom-search w-90">
           <input type="text" className="form-control form-control-lg custom-search-input rounded-pill" placeholder="Search for a Course"  value={filterText} onChange={(e) => setFilterText(e.target.value)}/>
-          <button className="btn btn-primary custom-search-botton rounded-pill" type="submit">
+          <button className="btn btn-category custom-search-botton rounded-pill" type="submit">
             <FontAwesomeIcon size="lg" icon={faSearch}/>
           </button>  
         </div>
@@ -143,7 +112,7 @@ const Search = (props) => {
         <div className="d-flex flex-row rows justify-content-around mb-3 mt-3">
           {
             upperdata.map((category)=>(
-            <button type="button" className="fs-12 btn btn-primary btn-sm rounded-pill w-30 mb-3" value={category.id} style={{textTransform: 'capitalize'}}>{category.name}</button>
+            <button type="button" className="fs-12 btn btn-category btn-sm rounded-pill w-30 mb-3" value={category.id} style={{textTransform: 'capitalize'}}>{category.name}</button>
             ))
           }
         </div>   

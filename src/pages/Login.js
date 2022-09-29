@@ -10,6 +10,7 @@ function Login () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [msg, setMsg] = useState('');
+    
     //login
     const handleEmailChange = e => {
         setEmail(e.target.value)
@@ -18,33 +19,6 @@ function Login () {
     const handlePasswordChange = e => {
         setPassword(e.target.value)
     };
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     console.log(email);
-    //     let result = await fetch("http://localhost:3000/loginstudent", {
-    //         method: 'POST',
-    //         credentials: 'include',
-    //         body: JSON.stringify({ email, password }),
-    //         headers: {
-    //             "Content-Type": "application/json"
-    //         }
-    //     })
-    //     if (result.status === 200) {
-    //         history.push({
-    //           pathname: '/home',
-    //           // state: { email: email }
-    //     });
-    //       localStorage.setItem('email', email);
-    //     } else if (result.status === 205) {
-    //       history.push({
-    //         pathname: '/home',
-    //         // state: { email: email }
-    //       });
-    //       localStorage.setItem('email', email);
-    //     } else {
-    //         setMsg(true);
-    //     }
-    // }
 
     const handleSubmit = async (e) => {
       e.preventDefault();

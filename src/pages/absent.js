@@ -1,8 +1,10 @@
+/*eslint-disable eqeqeq*/
 import React, { useEffect, useState } from 'react';
 import logokodak from '../logo-kodak.svg';
+import usericon from '../assets/user-icon.png'
 import Card from 'react-bootstrap/Card';
 import { Nav } from 'reactstrap';
-import { NavLink, useParams, Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
@@ -10,19 +12,16 @@ import Moment from 'react-moment';
 
 const Absent = () => {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const email = localStorage.getItem('email');
   const current = new Date();
 
   useEffect(() => {
 
     const getProduct = async () => {
-      setIsLoading(true);
       axios.get("http://localhost:3000/products", { withCredentials: "true" })
         .then((response) => {
           setData(response.data);
           console.log(data);
-          setIsLoading(false);
         })
         .catch(error => {
           console.log(error.response);
@@ -33,13 +32,12 @@ const Absent = () => {
     getStudent();
     getSchedule();
     getStudentCourse();
-    getProductCourse();
+    // getProductCourse();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const [coba, setCoba] = useState([]);
   const getNama = async () => {
-    setIsLoading(true);
     axios.get("http://localhost:3000/usersstudent", { withCredentials: "true" })
       .then((response) => {
         setCoba(response.data);
@@ -51,8 +49,7 @@ const Absent = () => {
 
   const [schedule, setSchedule] = useState([]);
   const getSchedule = async () => {
-    setIsLoading(true);
-    axios.get("http://localhost:3000/schedules", { withCredentials: "true" })
+    axios.get("http://localhost:3000/class-schedules", { withCredentials: "true" })
       .then((response) => {
         setSchedule(response.data);
       })
@@ -63,7 +60,6 @@ const Absent = () => {
 
   const [studentcourse, setStudentCourse] = useState([]);
   const getStudentCourse = async () => {
-    setIsLoading(true);
     axios.get("http://localhost:3000/student-courses", { withCredentials: "true" })
       .then((response) => {
         setStudentCourse(response.data);
@@ -75,7 +71,6 @@ const Absent = () => {
 
   const [student, setStudent] = useState([]);
   const getStudent = async () => {
-    setIsLoading(true);
     axios.get("http://localhost:3000/students", { withCredentials: "true" })
       .then((response) => {
         setStudent(response.data);
@@ -85,25 +80,23 @@ const Absent = () => {
       });
   };
 
-  const [product, setProduct] = useState([])
-  const getProductCourse = async () => {
-    setIsLoading(true);
-    axios.get("http://localhost:3000/productsDistinct", { withCredentials: "true" })
-      .then((response) => {
-        setProduct(response.data);
-        console.log(data);
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.log(error.response);
-      });
-  };
+  // const [product, setProduct] = useState([])
+  // const getProductCourse = async () => {
+  //   axios.get("http://localhost:3000/productsDistinct", { withCredentials: "true" })
+  //     .then((response) => {
+  //       setProduct(response.data);
+  //       console.log(data);
+  //     })
+  //     .catch(error => {
+  //       console.log(error.response);
+  //     });
+  // };
 
   const filtt = (coba.filter(
     item => item.email === email)
   );
 
-  const role = filtt.map((i) => i.role)
+  // const role = filtt.map((i) => i.role)
   const iduser = filtt.map((i) => i.id)
 
   const filttidstudent = (student.filter(
@@ -174,7 +167,7 @@ const Absent = () => {
                     <div className="my-auto">
                       <img
                         alt=""
-                        src={logokodak}
+                        src={usericon}
                         width="50"
                         height="50"
                         className="rounded-circle my-auto d-block"
@@ -194,9 +187,9 @@ const Absent = () => {
                   <div className="d-flex flex-column justify-content-between text-center font-1">
                     {
                       productname.map((course, index) => (
-                        <div className="d-flex flex-row justify-content-between">
-                          <div>
-                            <span className="">{course.name.substring(0, 6)}</span>
+                        <div className="d-flex flex-row justify-content-between mb-3">
+                          <div className="course-absent">
+                            <span>{course.name.substring(0, 15)}...</span>
                           </div>
                           <div className="d-flex flex-column">
                             <span className="">Total Qouta</span>
@@ -218,12 +211,12 @@ const Absent = () => {
       </div>
       <div className="container" style={{ height: "25vh" }}>
         <div className="">
-          <div className="text-center h3 fw-bold mt-5 mb-5">
+          <div className="text-center h3 fw-bold mt-5 mb-3">
             <Moment format="hh:mm">
               {current}
             </Moment>
           </div>
-          <div className="d-flex justify-content-center text-white mb-3 mt-4 text-center">
+          <div className="d-flex justify-content-center text-white mb-1 mt-1 text-center">
             <Link to='/scan-barcode' className="btn-lg w-50 rounded-pill link-orange shadow">
               Scan me
             </Link>

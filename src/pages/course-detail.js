@@ -1,3 +1,4 @@
+/* eslint eqeqeq: 0 */
 import React , { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Nav, NavItem} from 'reactstrap';
@@ -14,8 +15,9 @@ const Course = () => {
   // const [showResults2, setShowResults2] = React.useState(false)
 
   const [data, setData] = useState([]);
+  const [unit, setUnit] = useState([]);
   const [product, setProduct] = useState([]);
-  const [totalSum, setTotalSum] = useState(0);
+  const email = localStorage.getItem('email');
   const length = data.length;
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const Course = () => {
 
   useEffect(() => {
     const getProductby = async () => {
-      axios.get("http://localhost:3000/product-unitsbyProductid/"+ id, {withCredentials : 'true'})
+      axios.get("http://localhost:3000/product-unitsbyproductid/"+ id, {withCredentials : 'true'})
         .then((response) => {
           setData(response.data);
         })
@@ -43,26 +45,111 @@ const Course = () => {
       })
     };
     getProductby();
+    getUnit();
+    getNama();
+    getStudent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
-    const total = data.reduce((acc, row) => acc + data.amount, 0);
-    setTotalSum(total)
-  }, [data]);
+  const getUnit = async () => {
+    axios.get("http://localhost:3000/report-unit", {withCredentials : 'true'})
+      .then((response) => {
+        setUnit(response.data);
+      })
+      .catch(error => {
+        console.log(error.response)
+    })
+  };
+
+  const [coba, setCoba] = useState([]);
+  const getNama = async () => {
+    axios.get("http://localhost:3000/usersstudent", { withCredentials: "true" })
+      .then((response) => {
+        setCoba(response.data);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
+  const [student, setStudent] = useState([]);
+  const getStudent = async () => {
+    axios.get("http://localhost:3000/students", { withCredentials: "true" })
+      .then((response) => {
+        setStudent(response.data);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+  };
+
+  const filtt = (coba.filter(
+    item => item.email === email)
+  );
+
+  const iduser = filtt.map((i) => i.id)
+
+  const filttidstudent = (student.filter(
+    item => item.user_id == iduser)
+  );
+
+  const idstudent = filttidstudent.map((i) => i.id)
+
+  const filttunit = (unit.filter(
+    item => item.student_id == idstudent)
+  );
+
+  const iddataunit = filttunit.map((i) => i.unit_id)
+
+  const filttidclass = (data.filter(({id}) => iddataunit.includes(id))
+  );
+
+  const idfilttidclass = filttidclass.map((i) => i.id)
+  
+  const lengthunit = filttidclass.length;
+
+  
+  const datamap = data.map(i => i.id)
+  
+  const tesarray = datamap.indexOf(idfilttidclass);
+
+  const inarraytes = datamap.includes(1);
+
+
+  console.log(datamap);
+  console.log(tesarray);
+  console.log(inarraytes);
+  console.log(idfilttidclass);
+  console.log(filttidclass);
 
   const Results = () => {
     return (
-      data.map((data, index)=>(
-        <ul className="list-group mb-3">
-          <li className="list-group-item list-account">
-          <Link className="d-flex justify-content-between account-menu">
-            <span>{data.name}</span>
-            <FontAwesomeIcon size="lg" icon={faCheckCircle}/>
-          </Link>
-          </li>
-        </ul>
-      ))
+      data.map((data, index)=>{
+        if(data.id == idfilttidclass[index]){
+          return(
+            <ul className="list-group mb-3">
+              <li className="list-group-item list-account">
+              <Link className="d-flex justify-content-between account-menu">
+                <span className="text-success">{data.name}</span>
+                <FontAwesomeIcon style={{color: "green"}} size="lg" icon={faCheckCircle}/>
+              </Link>
+              </li>
+            </ul>
+          )
+        }else{
+          return(
+            <ul className="list-group mb-3">
+              <li className="list-group-item list-account">
+              <Link className="d-flex justify-content-between account-menu">
+                
+                <span>{data.name}</span>
+                <FontAwesomeIcon size="lg" icon={faCheckCircle}/>
+              </Link>
+              </li>
+            </ul>
+          )
+        }
+      })
     );
   };
 
@@ -87,7 +174,7 @@ const Course = () => {
         <Card className=" w-75 align-content-center shadow rounded">
             <Card.Body>
             <Card.Title className="text-center">{product.name}</Card.Title>
-            <Card.Subtitle className="text-muted text-center">0/{length}</Card.Subtitle>
+            <Card.Subtitle className="text-muted text-center">{lengthunit}/{length}</Card.Subtitle>
             </Card.Body>
         </Card>
        </div>

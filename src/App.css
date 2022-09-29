@@ -113,7 +113,13 @@ hr {
 
 .subtitle-absent{
   padding: 25px;
-  height: 45vh;
+  display: block;
+  overflow: auto;
+}
+
+.course-absent{
+  inline-size: 100px;
+  overflow-wrap: break-word;
 }
 
 .strike {
@@ -319,7 +325,11 @@ hr {
 }
 
 .text-d{
-  font-weight: 700 !important;
+  color: #000 !important;
+}
+
+.text-dd{
+  font-weight: 400 !important;
   color: #000 !important;
 }
 
@@ -335,4 +345,13 @@ hr {
 
 .rows{
   flex-wrap: wrap;
+}
+
+.btn-category{
+  background-color: #ED933D !important;
+  color: #fff !important;
+}
+
+.page-404{
+  background-image: linear-gradient( 94.3deg,  rgb(64, 47, 26) 10.9%, rgb(20, 20, 20) 87.1% );
 }

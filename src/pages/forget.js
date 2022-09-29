@@ -1,35 +1,34 @@
 import React, {useState}from 'react';
 import logokodak from '../logo-kodak.svg';
 import { useHistory, Link } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from "axios";
 
 const Forget = (props) => {
   let history = useHistory();
-  const [full_name, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
+  // const [full_name, setFullName] = useState('');
+  // const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confPassword, setConfPassword] = useState('');
-  const [role, setRole] = useState('Student');
-  const [msg, setMsg] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [confPassword, setConfPassword] = useState('');
+  // const [role] = useState('Student');
 
-  const handleNameChange = e => {
-    setFullName(e.target.value)
-  };
-  const handlePhoneChange = e => {
-    setPhone(e.target.value)
-  };
+  // const handleNameChange = e => {
+  //   setFullName(e.target.value)
+  // };
+  // const handlePhoneChange = e => {
+  //   setPhone(e.target.value)
+  // };
   const handleEmailChange = e => {
     setEmail(e.target.value)
   };
-  const handlePasswordChange = e => {
-    setPassword(e.target.value)
-  };
-  const handleConfPasswordChange = e => {
-    setConfPassword(e.target.value)
-  };
+  // const handlePasswordChange = e => {
+  //   setPassword(e.target.value)
+  // };
+  // const handleConfPasswordChange = e => {
+  //   setConfPassword(e.target.value)
+  // };
 
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
@@ -54,17 +53,11 @@ const Forget = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     axios.post('http://localhost:3000/users', {
-      full_name: full_name,
-      phone: phone,
       email: email,
-      password: password,
-      confPassword: confPassword,
-      role: role
     }).then(() => {
       history.push("/");
     }).catch((error) => {
       console.log(error)
-      setMsg(error.response.data.msg)
     });
   };
 
@@ -88,19 +81,14 @@ const Forget = (props) => {
       <Form onSubmit={handleSubmit}>
       <div className="justify-content-center mt-5 w-75 mx-auto">
       <p className="has-text-centered"></p>
-        {msg ? (
-            <div className="alert alert-danger" role="alert">
-                {msg}
-            </div>)
-            : (<></>)}
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control type="email" className="form-control rounded-pill border border-warning text-center" placeholder="Enter your email" onChange={handleEmailChange} value={email}/>
         </Form.Group>
         <div className="d-flex flex-column justify-content-center mt-5">
-        {/* <Button variant="primary" type="submit" className="btn btn-warning shadow rounded-pill mb-3">
+        {/* <Button to="/verification-code" variant="primary" type="submit" className="btn btn-warning shadow rounded-pill mb-3">
           Send Code
         </Button> */}
-        <Link to="/verification-code" className="btn btn-warning shadow rounded-pill mb-3">Send Code</Link>
+        <Link to="/change-password" className="btn btn-warning shadow rounded-pill mb-3">Send Code</Link>
         </div>
         </div>
       </Form>

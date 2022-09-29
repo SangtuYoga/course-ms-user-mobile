@@ -1,10 +1,11 @@
+/*eslint-disable eqeqeq*/
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import { Nav, NavItem } from 'reactstrap';
-import Spinner from 'react-bootstrap/Spinner';
+// import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { NavLink, Link, useHistory } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
@@ -12,26 +13,21 @@ import axios from "axios";
 const CreateNote = () => {
     let history = useHistory();
     const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
     const email = localStorage.getItem('email');
-
-    const [id, setId] = useState('');
     const [studentId, setStudentId] = useState('');
     const [employeeId, setEmployeeId] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [roleStd, setRoleStd] = useState('Student');
-    const [roleEmp, setRoleEmp] = useState('Employee');
+    const [roleStd] = useState('Student');
+    const [roleEmp] = useState('Employee');
 
     useEffect(() => {
 
         const getNotes = async () => {
-            setIsLoading(true);
             axios.get("http://localhost:3000/notes", { withCredentials: "true" })
                 .then((response) => {
                     setData(response.data);
                     console.log(data);
-                    setIsLoading(false);
                 })
                 .catch(error => {
                     console.log(error.response);
@@ -78,7 +74,6 @@ const CreateNote = () => {
 
     const [coba, setCoba] = useState([]);
     const getNama = async () => {
-        setIsLoading(true);
         axios.get("http://localhost:3000/usersstudent", { withCredentials: "true" })
             .then((response) => {
                 setCoba(response.data);
@@ -90,7 +85,6 @@ const CreateNote = () => {
 
     const [student, setStudent] = useState([]);
     const getStudent = async () => {
-        setIsLoading(true);
         axios.get("http://localhost:3000/students", { withCredentials: "true" })
             .then((response) => {
                 setStudent(response.data);
@@ -102,7 +96,6 @@ const CreateNote = () => {
 
     const [employee, setEmployee] = useState([]);
     const getEmployee = async () => {
-        setIsLoading(true);
         axios.get("http://localhost:3000/employee", { withCredentials: "true" })
             .then((response) => {
                 setEmployee(response.data);
@@ -125,17 +118,11 @@ const CreateNote = () => {
 
     const idstudent = filterestd.map((i) => i.id)
 
-    const filterdatastd = (data.filter(
-        item => item.student_id == idstudent)
-    );
-
     const filteremp = (employee.filter(
         item => item.user_id == iduser)
     )
 
     const idemployee = filteremp.map((i) => i.id)
-
-    const sortfilterdatastd = filterdatastd.slice().sort((a, b) => b.date - a.date)
 
     const employeeMap = employee.map((i) => i.user_id)
     const empMap = (employee.filter(({ user_id }) => employeeMap.includes(user_id))
@@ -144,15 +131,13 @@ const CreateNote = () => {
     const stdMap = (student.filter(({ user_id }) => studentMap.includes(user_id))
     );
 
-    console.log(idstudent);
-
-    const Loading = () => {
-        return (
-            <div className="mx-auto">
-                <Spinner animation="border" variant="warning" />
-            </div>
-        );
-    };
+    // const Loading = () => {
+    //     return (
+    //         <div className="mx-auto">
+    //             <Spinner animation="border" variant="warning" />
+    //         </div>
+    //     );
+    // };
 
     return (
         <div>
